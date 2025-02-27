@@ -12,7 +12,7 @@ type goodNF struct {
 
 type badTypedNF struct {
 	Frodo bool
-	Sam string
+	Sam   string
 }
 
 type badTooLargeNF struct {
@@ -22,11 +22,10 @@ type badTooLargeNF struct {
 	Zzz bool
 }
 
-
 func TestIsValid(t *testing.T) {
 	type testCase struct {
-		name string
-		in reflect.Value
+		name       string
+		in         reflect.Value
 		want_error bool
 	}
 	testCases := [...]testCase{
@@ -72,18 +71,20 @@ func TestIsValid(t *testing.T) {
 
 func TestFromInt(t *testing.T) {
 	type goodTestCase struct {
-		in uint
+		in   uint
 		want goodNF
 	}
 	goodTestCases := [...]goodTestCase{
 		// single flag set
 		{1, goodNF{Frodo: true}},
 		// multiple flags set
-		{3, goodNF{Frodo: true, Sam:true}},
+		{3, goodNF{Frodo: true, Sam: true}},
 	}
 	for _, tc := range goodTestCases {
 		got, err := FromInt[goodNF](tc.in)
-		if err != nil {t.Errorf("Got unexpected error %v", err)}
+		if err != nil {
+			t.Errorf("Got unexpected error %v", err)
+		}
 		if got != tc.want {
 			t.Errorf("got %v, wanted %v", got, tc.want)
 		}
@@ -92,18 +93,20 @@ func TestFromInt(t *testing.T) {
 
 func TestToInt(t *testing.T) {
 	type goodTestCase struct {
-		in goodNF
+		in   goodNF
 		want uint
 	}
 	goodTestCases := [...]goodTestCase{
 		// single flag set
 		{goodNF{Frodo: true}, 1},
 		// multiple flags set
-		{goodNF{Frodo: true, Sam:true}, 3},
+		{goodNF{Frodo: true, Sam: true}, 3},
 	}
 	for _, tc := range goodTestCases {
 		res, err := ToInt(tc.in)
-		if err != nil {t.Errorf("Got unexpected error %v", err)}
+		if err != nil {
+			t.Errorf("Got unexpected error %v", err)
+		}
 		if res != tc.want {
 			t.Errorf("got %v, wanted %v", res, tc.want)
 		}

@@ -44,11 +44,13 @@ func FromInt[NF comparable](val uint) (res NF, err error) {
 	reflection := reflect.ValueOf(&res).Elem()
 
 	err = isValid(reflection)
-	if err != nil { return }
+	if err != nil {
+		return
+	}
 
 	for i := 0; i < reflection.NumField(); i++ {
 		reflection.Field(i).SetBool(false)
-		if val & (1<<i) > 0 {
+		if val&(1<<i) > 0 {
 			reflection.Field(i).SetBool(true)
 		} else {
 			reflection.Field(i).SetBool(false)
@@ -63,11 +65,13 @@ func ToInt[NF comparable](instance NF) (res uint, err error) {
 	reflection := reflect.ValueOf(&instance).Elem()
 
 	err = isValid(reflection)
-	if err != nil { return }
+	if err != nil {
+		return
+	}
 
 	for i := 0; i < reflection.NumField(); i++ {
 		if reflection.Field(i).Bool() {
-			res += 1<<i
+			res += 1 << i
 		}
 	}
 	return
